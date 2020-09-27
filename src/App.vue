@@ -1,17 +1,31 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1>Geolocation</h1>
+    <div v-if="loc">
+      <p>Your location is:</p>
+      <p>Latitude: {{loc.coords.latitude}}</p>
+      <p>Longitude: {{loc.coords.longitude}}</p>
+    </div>
+
+    <button @click="getCurrentPosition">
+      Get Current Location
+    </button>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import { Plugins } from '@capacitor/core'
 export default {
   name: 'App',
-  components: {
-    HelloWorld
+  data() {
+    return{ loc: null }
+  },
+  methods: {
+    async getCurrentPosition(){
+      const { Geolocation } = Plugins;
+      const loc = await Geolocation.getCurrentPosition()
+      this.loc = loc
+    }
   }
 }
 </script>
